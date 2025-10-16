@@ -93,11 +93,12 @@ void Game::endTurn()
 
 void Game::scanForMouse()
 {
-    //if (gameHasAI() && getCurrentPlayer()->isAIPlayer()) 
-    //{
+	// test for ai comment when not needed
+    // if (gameHasAI() && getCurrentPlayer()->isAIPlayer()) 
+    // {
     //    updateAI();
     //    return;
-    //}
+    // }
 
     ImVec2 mousePos = ImGui::GetMousePos();
     mousePos.x -= ImGui::GetWindowPos().x;
