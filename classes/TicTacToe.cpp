@@ -75,7 +75,7 @@ void TicTacToe::setUpBoard()
       {
         for(int j = 0; j < _gameOptions.rowY; j++)
         {
-             _grid[i][j].initHolder(ImVec2((float)i * 90,(float)j * 90),"square.png",i ,j );
+             _grid[i][j].initHolder(ImVec2((float)i * 100,(float)j * 100),"square.png",i ,j );
         }
       }
       startGame();
@@ -207,8 +207,8 @@ int winConditions[8][3]  = {
     {
         const int *triple = winConditions[i];
         if(ownerAt(winConditions[i][0])!= nullptr && 
-            ownerAt(triple[0]) == ownerAt(triple[1]) &&
-            ownerAt(triple[2])){
+            ownerAt(triple[0]) == ownerAt(triple[1]) && 
+            ownerAt(triple[1]) == ownerAt(triple[2])){
              Logger::GetInstance().LogGameEvent(" Winner = " + to_string(ownerAt(triple[0])->playerNumber() +1 ) +" with a win in triple " + to_string(triple[0]) + "," + to_string(triple[1]) + "," + to_string(triple[2]));
             return ownerAt(triple[0]);
         }
