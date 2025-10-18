@@ -1,0 +1,10 @@
+The objective of this coding assignment was to create a tic-tac-toe board to display using an IMGUI window. 
+Most of the programming that was used for this assignment was completed in TicTacToe.cpp. 
+The programming was very straightforward as each function had commented descriptions highlighting the key components needed to program the logic. To get the tic-toe grid the project uses two components, a bit holder, and a bit that is stored in the holder. In order to track the state of the game, a state string is used. this string is created at the start of the game and is updated everytime a player makes a move. 
+
+For this assignment my source of help mainly came from attending the TA's office hours on tuesday. 
+Here he provided me guidance on how the statestring was used to store information about the board. I asked for how the implementation of setStateString() and checkForWinner() interacted with the game. 
+
+The only other changes I made to this assignment was adding the logger.cpp class to the code as a means of debugging in an IMGUI window. 
+
+-Michael tang

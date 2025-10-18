@@ -89,24 +89,27 @@ bool TicTacToe::actionForEmptyHolder(BitHolder *holder)
 {
     // 1) Guard clause: if holder is nullptr, fail fast.
     //    (Beginner hint: always check pointers before using them.)
+    // 2) Is it actually empty?
+    //    Ask the holder for its current Bit using the bit() function.
+    //    If there is already a Bit in this holder, return false.
+     // 3) Place the current player's piece on this holder:
+    //    - Figure out whose turn it is (getCurrentPlayer()->playerNumber()).
+    //    - Create a Bit via PieceForPlayer(currentPlayerIndex).
+    //    - Position it at the holder's position (holder->getPosition()).
+    //    - Assign it to the holder: holder->setBit(newBit);
+     // 4) Return whether we actually placed a piece. true = acted, false = ignored.
+
         if (!holder) 
         {
             return false;
         }
 
-    // 2) Is it actually empty?
-    //    Ask the holder for its current Bit using the bit() function.
-    //    If there is already a Bit in this holder, return false.
+    
 
     if(holder->bit() != nullptr){
         return false;
     }
-    // 3) Place the current player's piece on this holder:
-    //    - Figure out whose turn it is (getCurrentPlayer()->playerNumber()).
-    //    - Create a Bit via PieceForPlayer(currentPlayerIndex).
-    //    - Position it at the holder's position (holder->getPosition()).
-    //    - Assign it to the holder: holder->setBit(newBit);
-
+   
     if(getCurrentPlayer()->playerNumber() == 0 )
     {
         Bit *newBit = PieceForPlayer(getCurrentPlayer()->playerNumber());
@@ -121,7 +124,7 @@ bool TicTacToe::actionForEmptyHolder(BitHolder *holder)
         holder->setBit(newBit);
         return true;
     }
-    // 4) Return whether we actually placed a piece. true = acted, false = ignored.
+   
     return false; // replace with true if you complete a successful placement    
 }
 
@@ -214,13 +217,7 @@ int winConditions[8][3]  = {
         }
     }
     return nullptr;
-    // for(int i = 0; i < 8; i++)
-    // {
-        
-        
-    //     if(player!= '0' && player == state[triple[1]]&& player == state[triple[2]])
-    //     return 10;
-    // }
+  
 }
 
 bool TicTacToe::checkForDraw()
