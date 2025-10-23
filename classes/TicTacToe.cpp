@@ -65,19 +65,18 @@ void TicTacToe::setUpBoard()
     // finally we should call startGame to get everything going
        setNumberOfPlayers(2);
       Logger::GetInstance().LogGameEvent("current player = " + to_string(getCurrentPlayer()->playerNumber()));
-      Logger::GetInstance().LogGameEvent("is AI player = " + to_string(getCurrentPlayer()->isAIPlayer()));
+      Logger::GetInstance().LogGameEvent("is AI player = " + to_string(_gameOptions.playerVSAI));
 
+      _gameOptions.rowX = 3;
+      _gameOptions.rowY = 3; 
 
-       if (gameHasAI())
+       if (gameHasAI() && _gameOptions.playerVSAI == true)
        {
             setAIPlayer(AI_PLAYER);
             //updateAI();
        }
-
     
-    
-     _gameOptions.rowX = 3;
-     _gameOptions.rowY = 3; 
+     
 
     //    Logger::GetInstance().LogGameEvent("set up game row and col to ");
       for(int i = 0; i < _gameOptions.rowX; i++)
