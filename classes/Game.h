@@ -24,6 +24,7 @@ struct GameOptions
 	int AIDepthSearches;
 	int AIMAXDepth;
 	bool AIvsAI;
+	bool playerTypeSelected;
 };
 
 class Game

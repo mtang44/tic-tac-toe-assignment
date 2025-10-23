@@ -63,23 +63,32 @@ void TicTacToe::setUpBoard()
     // then we need to setup our 3x3 array in _grid with the correct position of the square, and load the "square.png" sprite for each square
     // we will use the initHolder function on each square to do this
     // finally we should call startGame to get everything going
+       setNumberOfPlayers(2);
+      Logger::GetInstance().LogGameEvent("current player = " + to_string(getCurrentPlayer()->playerNumber()));
+      Logger::GetInstance().LogGameEvent("is AI player = " + to_string(getCurrentPlayer()->isAIPlayer()));
 
 
-     setNumberOfPlayers(2);
+       if (gameHasAI())
+       {
+            setAIPlayer(AI_PLAYER);
+            //updateAI();
+       }
+
+    
     
      _gameOptions.rowX = 3;
      _gameOptions.rowY = 3; 
 
-       Logger::GetInstance().LogGameEvent("set up game row and col to ");
+    //    Logger::GetInstance().LogGameEvent("set up game row and col to ");
       for(int i = 0; i < _gameOptions.rowX; i++)
       {
         for(int j = 0; j < _gameOptions.rowY; j++)
         {
-             _grid[i][j].initHolder(ImVec2((float)i * 100,(float)j * 100),"square.png",i ,j );
+             _grid[i][j].initHolder(ImVec2(i*100 + 100,j*100 + 100),"square.png",i ,j );
         }
       }
       startGame();
-      // if (hasAIPlayer())
+    
 }
 
 //
@@ -113,13 +122,13 @@ bool TicTacToe::actionForEmptyHolder(BitHolder *holder)
     if(getCurrentPlayer()->playerNumber() == 0 )
     {
         Bit *newBit = PieceForPlayer(getCurrentPlayer()->playerNumber());
-        Logger::GetInstance().LogGameEvent("New Bit created for player 1");
+        // Logger::GetInstance().LogGameEvent("New Bit created for player 1");
         newBit->setPosition(holder->getPosition());
         holder->setBit(newBit);
         return true;
     }else if(getCurrentPlayer()->playerNumber() == 1){
         Bit *newBit = PieceForPlayer(getCurrentPlayer()->playerNumber());
-        Logger::GetInstance().LogGameEvent("New Bit created for player 2");
+        // Logger::GetInstance().LogGameEvent("New Bit created for player 2");
         newBit->setPosition(holder->getPosition());
         holder->setBit(newBit);
         return true;
@@ -153,9 +162,10 @@ void TicTacToe::stopGame()
         for(int j = 0; j < _gameOptions.rowY; j++)
         {
             _grid[i][j].destroyBit();
-            Logger::GetInstance().LogGameEvent("Board is cleared");
+            
         }
     }
+    Logger::GetInstance().LogGameEvent("Board is cleared");
 }
 
 //
@@ -212,7 +222,7 @@ int winConditions[8][3]  = {
         if(ownerAt(winConditions[i][0])!= nullptr && 
             ownerAt(triple[0]) == ownerAt(triple[1]) && 
             ownerAt(triple[1]) == ownerAt(triple[2])){
-             Logger::GetInstance().LogGameEvent(" Winner = " + to_string(ownerAt(triple[0])->playerNumber() +1 ) +" with a win in triple " + to_string(triple[0]) + "," + to_string(triple[1]) + "," + to_string(triple[2]));
+            Logger::GetInstance().LogGameEvent(" Winner = " + to_string(ownerAt(triple[0])->playerNumber() +1 ) +" with a win in triple " + to_string(triple[0]) + "," + to_string(triple[1]) + "," + to_string(triple[2]));
             return ownerAt(triple[0]);
         }
     }
@@ -231,7 +241,7 @@ bool TicTacToe::checkForDraw()
 
 
     string state = stateString();
-    if(state.find("0") == string :: npos)
+    if(state.find('0') == string :: npos)
     {
         return true;
     }
@@ -260,9 +270,9 @@ std::string TicTacToe::stateString() const
     {
         for(int j = 0; j < _gameOptions.rowY; j++)
         {
-            if(_grid[j][i].bit() != nullptr)
+            if(_grid[i][j].bit() != nullptr)
             {
-                s[index] = to_string(_grid[j][i].bit()->getOwner()->playerNumber() +1)[0];
+                s[index] = to_string(_grid[i][j].bit()->getOwner()->playerNumber() +1)[0];
             }
             else
             {
@@ -329,7 +339,7 @@ void TicTacToe::setStateString(const std::string &s)
             int y_col = index / 3; 
             BitHolder * holder = &_grid[y_col][x_col];
             Bit *newBit = PieceForPlayer(getCurrentPlayer()->playerNumber());
-            Logger::GetInstance().LogGameEvent("New Bit created for player 1");
+            // Logger::GetInstance().LogGameEvent("New Bit created for player 1");
             newBit->setPosition(holder->getPosition());
             holder->setBit(newBit);
             index++;
@@ -344,7 +354,7 @@ void TicTacToe::setStateString(const std::string &s)
 void TicTacToe::updateAI() 
 {
     // we will implement the AI in the next assignment!
-
+    Logger::GetInstance().LogGameEvent("AI player making move. . .");
     int bestMove = -1000;
     int bestSquare = -1;
     _recursions = 0; 
@@ -371,17 +381,18 @@ void TicTacToe::updateAI()
         
         BitHolder *holder = &_grid[ycol][xcol];
         actionForEmptyHolder(holder);
-        endTurn();
         cout << "Recursions: " << _recursions << endl;
+        Logger::GetInstance().LogGameEvent("Best move is square " + to_string(bestSquare));
+        endTurn();
     }
 
 }
-bool aiBoardFull(string & state)
+bool aiBoardFull(const string & state)
 {
     // if no value found board is full
-    return state.find("0") == string::npos;
+    return state.find('0') == string::npos;
 }
-bool aiWinner(const string& state)
+int aiWinner(const string& state)
 {
     static const int kWinningTriples[8][3] = {
         {0,1,2}, //top row

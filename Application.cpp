@@ -29,6 +29,7 @@ namespace ClassGame {
             logger.LogInfo("Game started successfully");
 
             logger.LogGameEvent("Application initialized");
+
              game = new TicTacToe();
              game->setUpBoard();
         }
@@ -53,6 +54,7 @@ namespace ClassGame {
                 ImGui::Begin("Settings");
                 ImGui::Text("Current Player Number: %d", game->getCurrentPlayer()->playerNumber());
                 ImGui::Text("Current Board State: %s", game->stateString().c_str());
+                ImGui::Text("has ai player %d",game->gameHasAI());
 
                 if (gameOver) {
                     ImGui::Text("Game Over!");
@@ -60,17 +62,36 @@ namespace ClassGame {
                     if (ImGui::Button("Reset Game")) {
                         game->stopGame();
                         game->setUpBoard();
+                        game->_gameOptions.AIPlaying = false;
                         gameOver = false;
+                        game->_gameOptions.playerTypeSelected = false;
+                        
                         gameWinner = -1;
                     }
                 }
+                if(ImGui::Button("Play AI"))
+                {
+                    // game->_gameOptions.AIPlaying = true;
+                    game->_gameOptions.playerTypeSelected = true;
+                    Logger::GetInstance().LogGameEvent("Ai Player Enabled");
+                }
+                if(ImGui::Button("Play COOP"))
+                {
+                    game->_gameOptions.AIPlaying = false;
+                    game->setAIPlayer(false);
+                    game->_gameOptions.playerTypeSelected = true;
+                    Logger::GetInstance().LogGameEvent("Player 2 Enabled");
+                }
                 ImGui::End();
 
-                cout << "settings window creadted " << endl;
                 ImGui::Begin("GameWindow");
                 game->drawFrame();
+                if(!game->_gameOptions.playerTypeSelected){
+                
+                    ImGui::Text("Please select Player vs Player or Player vs AI to begin");
+                
+	            }
                 ImGui::End();
-                cout << "game window creadted " << endl;
                 // Show log window
                 ImGui::Begin("Log Window");
                 
@@ -95,7 +116,6 @@ namespace ClassGame {
                     }
                 }
                 ImGui::End();
-                cout << "settings window creadted " << endl;
         }
 
         //

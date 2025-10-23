@@ -3,6 +3,7 @@
 #include "BitHolder.h"
 #include "Turn.h"
 #include "../Application.h"
+#include "../Logger.h"
 
 Game::Game()
 {
@@ -16,6 +17,7 @@ Game::Game()
 	_gameOptions.score = 0;
 	_gameOptions.AIDepthSearches = 0;
 	_gameOptions.AIvsAI = false;
+	_gameOptions.playerTypeSelected = false;
 	
 	_score = 0;
 	_table = nullptr;
@@ -94,11 +96,14 @@ void Game::endTurn()
 void Game::scanForMouse()
 {
 	// test for ai comment when not needed
-    // if (gameHasAI() && getCurrentPlayer()->isAIPlayer()) 
-    // {
-    //    updateAI();
-    //    return;
-    // }
+	// Logger::GetInstance().LogInfo("Testing gamehasAI " + to_string(gameHasAI()));
+	// Logger::GetInstance().LogInfo("Testing getCurrentplayer is AIplayer " + to_string(getCurrentPlayer()->isAIPlayer()));
+    if (gameHasAI() && getCurrentPlayer()->isAIPlayer()) 
+    {
+		// Logger::GetInstance().LogInfo("Testing gamehasAI " + to_string(gameHasAI())); 
+       updateAI();
+       return;
+    }
 
     ImVec2 mousePos = ImGui::GetMousePos();
     mousePos.x -= ImGui::GetWindowPos().x;
@@ -129,16 +134,21 @@ void Game::scanForMouse()
 void Game::drawFrame()
 {
     scanForMouse();
+	
+	if(_gameOptions.playerTypeSelected)
+	{
 
-    for (int y=0; y<_gameOptions.rowY; y++) {
-        for (int x=0; x<_gameOptions.rowX; x++) {
-			BitHolder &holder = getHolderAt(x, y);
-            holder.paintSprite();
-            if (holder.bit()) {
-                holder.bit()->paintSprite();
-            }
-        }
-    }
+	
+		for (int y=0; y<_gameOptions.rowY; y++) {
+			for (int x=0; x<_gameOptions.rowX; x++) {
+				BitHolder &holder = getHolderAt(x, y);
+				holder.paintSprite();
+				if (holder.bit()) {
+					holder.bit()->paintSprite();
+				}
+			}
+		}
+	}
 }
 
 void Game::bitMovedFromTo(Bit *bit, BitHolder *src, BitHolder *dst)
@@ -168,10 +178,13 @@ bool Game::animateAndPlaceBitFromTo(Bit *bit, BitHolder*src, BitHolder*dst)
 
 bool Game::gameHasAI()
 {
-    return false;
+	Logger::GetInstance().LogInfo("GameHasAI called"); 
+	Logger::GetInstance().LogGameEvent("Game::gameHasAI called, AIPlaying: " + to_string(_gameOptions.AIPlaying));
+    return _gameOptions.AIPlaying;
 }
 
 void Game::updateAI()
 {
+
 }
 
