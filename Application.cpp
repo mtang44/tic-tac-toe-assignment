@@ -69,21 +69,24 @@ namespace ClassGame {
                         gameWinner = -1;
                     }
                 }
-                if(ImGui::Button("Play AI"))
+                if(game->_gameOptions.playerTypeSelected == false)
                 {
-                    game->_gameOptions.playerVSAI = true;
-                    game->_gameOptions.playerTypeSelected = true;
-                    
-                    game->setUpBoard(); // recreates board with AI player active
-                    Logger::GetInstance().LogGameEvent("Ai Player Enabled");
-                }
-                if(ImGui::Button("Play COOP"))
-                {
-                    game->_gameOptions.playerVSAI = false;
-                    //game->setAIPlayer(false);
-                    game->_gameOptions.playerTypeSelected = true;
-                    game->setUpBoard(); // recreates board with 2nd player active
-                    Logger::GetInstance().LogGameEvent("Player 2 Enabled");
+                    if(ImGui::Button("Play AI"))
+                    {
+                        game->_gameOptions.playerVSAI = true;
+                        game->_gameOptions.playerTypeSelected = true;
+                        
+                        game->setUpBoard(); // recreates board with AI player active
+                        Logger::GetInstance().LogGameEvent("Ai Player Enabled");
+                    }
+                    if(ImGui::Button("Play COOP"))
+                    {
+                        game->_gameOptions.playerVSAI = false;
+                        //game->setAIPlayer(false);
+                        game->_gameOptions.playerTypeSelected = true;
+                        game->setUpBoard(); // recreates board with 2nd player active
+                        Logger::GetInstance().LogGameEvent("Player 2 Enabled");
+                    }
                 }
                 ImGui::End();
 
