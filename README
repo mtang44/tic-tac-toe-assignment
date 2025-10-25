@@ -1,3 +1,13 @@
+Assignment #3 README
+The objective of this coding assignment was to take the tic-tac-toe project completed in assignment #2, and enable it to have a AI algorithm that uses negamax in order to make the most optiomal soltution. The code for the negamax algorithm was provided by the professor in class. An aspect that I changed for this project was that I added a AI player button and a 2 person player button that would require the user to select the game type. I created a _gameObjects.playerTypeSelected which is a bool that would see if the player has selected a player. If the player did, then the game would load the corresponding game type. However if the player had not chosen a enemy type, the game would not show up until the player choose. For this assignment I did not implement alpha beta pruning. 
+
+-Michael Tang
+
+
+
+
+Assignment #2 README
+
 The objective of this coding assignment was to create a tic-tac-toe board to display using an IMGUI window. 
 Most of the programming that was used for this assignment was completed in TicTacToe.cpp. 
 The programming was very straightforward as each function had commented descriptions highlighting the key components needed to program the logic. To get the tic-toe grid the project uses two components, a bit holder, and a bit that is stored in the holder. In order to track the state of the game, a state string is used. this string is created at the start of the game and is updated everytime a player makes a move. 
